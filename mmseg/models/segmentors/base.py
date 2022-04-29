@@ -155,14 +155,9 @@ class BaseSegmentor(BaseModule, metaclass=ABCMeta):
         losses = self(**data_batch)
         loss, log_vars = self._parse_losses(losses)
 
-        log_vars_ = dict()
-        for loss_name, loss_value in log_vars.items():
-            k = loss_name + '_val'
-            log_vars_[k] = loss_value
-
         outputs = dict(
             loss=loss,
-            log_vars=log_vars_,
+            log_vars=log_vars,
             num_samples=len(data_batch['img_metas']))
 
         return outputs
