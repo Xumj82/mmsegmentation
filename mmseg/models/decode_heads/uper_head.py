@@ -89,7 +89,7 @@ class UPerHead(BaseDecodeHead):
         ``self.cls_seg`` fc.
 
         Args:
-            inputs (list[Tensor]): List of multi-level img features.
+            inputs (list[Tensor]): List of multi-level img features from backbone layers.
 
         Returns:
             feats (Tensor): A tensor of shape (batch_size, self.channels,
