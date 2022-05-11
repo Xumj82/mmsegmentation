@@ -1,4 +1,6 @@
 # dataset settings
+
+
 dataset_type = 'DDSMDataset'
 data_root = 'data/ddsm_dataset/'
 img_norm_cfg = dict(
@@ -77,33 +79,39 @@ model = dict(
         pool_scales=(1, 2, 3, 6),
         channels=512,
         dropout_ratio=0.1,
-        num_classes=5,
+        num_classes=3,
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
-            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
-    auxiliary_head=dict(
-        type='FCNHead',
-        in_channels=1024,
-        in_index=2,
-        channels=256,
-        num_convs=1,
-        concat_input=False,
-        dropout_ratio=0.1,
-        num_classes=2,
-        norm_cfg=norm_cfg,
-        align_corners=False,
-        loss_decode=dict(
-            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0,
+            class_weight=[0.2,1,1]
+            ),   
+        ),
+    # pathology_head=dict(
+    #     type='FCNHead',
+    #     in_channels=1024,
+    #     in_index=2,
+    #     channels=256,
+    #     num_convs=1,
+    #     concat_input=False,
+    #     dropout_ratio=0.1,
+    #     num_classes=2,
+    #     norm_cfg=norm_cfg,
+    #     align_corners=False,
+    #     loss_decode=dict(
+    #         type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4),
+    #         class_weight=[0.2,1,1,1,1]
+    #         ),
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 
+
 # optimizer
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
+optimizer = dict(type='SGD', lr=1e-4, momentum=0.9, weight_decay=0.0005)
 optimizer_config = dict()
 # learning policy
-lr_config = dict(policy='poly', power=0.9, min_lr=1e-4, by_epoch=False)
+lr_config = dict(policy='poly', power=0.9, min_lr=1e-6, by_epoch=False)
 # runtime settings
 runner = dict(type='IterBasedRunner', max_iters=20000)
 checkpoint_config = dict(by_epoch=False, interval=2000)
